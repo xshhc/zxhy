@@ -1,0 +1,10 @@
+echo "make mbr"
+nasm mbr.s -o mbr
+
+echo "write mbr > c.img"
+dd if=./mbr of=./c.img bs=512 count=1 conv=notrunc
+
+echo "qemu start"
+qemu-system-i386 -hda ./c.img -m 512 -s -S &
+#  -nographic
+gdb -x gdb_mbr.conf
